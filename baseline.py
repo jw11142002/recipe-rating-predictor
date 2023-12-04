@@ -4,8 +4,8 @@
 
 import pandas as pd
 
-int_train_df = pd.read_csv("interactions_train.csv")
-int_test_df = pd.read_csv("interactions_test.csv")
+int_train_df = pd.read_csv("dataset/interactions_train.csv")
+int_test_df = pd.read_csv("dataset/interactions_test.csv")
 
 ## Model
 
@@ -31,3 +31,4 @@ prediction_df['prediction'] = 1
 prediction_df['correct'] = prediction_df.apply(lambda x: x['is_5'] == x['prediction'], axis=1)
 
 results = prediction_df.groupby('correct').size() / len(prediction_df)
+print(results)
