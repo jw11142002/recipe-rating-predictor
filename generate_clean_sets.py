@@ -16,7 +16,7 @@ def produce_clean_csv(filepath, new_filename):
     
     # produces new file with specified name
     set_df.to_csv(new_filename, index=False)
-    return
+    return set_df
 
 splits_dict = {
     'train': "interactions_train.csv",
@@ -24,5 +24,7 @@ splits_dict = {
     'test': "interactions_test.csv"
 }
 
+split_dfs = []
+
 for filename, filepath in splits_dict.items():
-    produce_clean_csv(filepath, f"clean_{filename}.csv")
+    split_dfs.append(produce_clean_csv(filepath, f"clean_{filename}.csv"))
