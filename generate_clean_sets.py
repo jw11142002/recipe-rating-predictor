@@ -16,6 +16,8 @@ def produce_clean_csv(filepath, new_filename):
     
     # produces new file with specified name
     set_df.to_csv(new_filename, index=False)
+
+    # returns as dataframe for efficiency :S
     return set_df
 
 splits_dict = {
