@@ -1,3 +1,4 @@
+### CSE 158 Assignment 2: Sentiment Analysis Model
 import csv
 from collections import defaultdict
 import math
@@ -13,9 +14,8 @@ import matplotlib.pyplot as plt
 from textblob import TextBlob
 
 
-csv_file_path = 'RAW_interactions.csv'
+csv_file_path = 'clean_train.csv'
 
-# Initialize the list to store all interactions
 allInteractions = []
 
 # Parse CSV data from the file
@@ -25,11 +25,11 @@ with open(csv_file_path, newline='', encoding='utf-8') as file:
 
     for row in reader:
         # Combine multiline content for the 'review' field
-        row[4] = row[4] + '\n'.join(row[5:])
-        del row[5:]  # Remove extra columns if any
+        row[3] = row[3] + '\n'.join(row[4:])
+        del row[4:]  # Remove extra columns if any
 
         # Convert 'rating' to int if needed
-        row[3] = int(row[3])
+        row[2] = int(row[2])
 
         # Create a dictionary for each interaction and add it to the list
         interaction = {header[i]: row[i] for i in range(len(header))}
@@ -48,21 +48,36 @@ def analyze_sentiment(review_text):
     
     return sentiment_polarity, sentiment_label
 
-# Iterate through all interactions and add sentiment-related information
+medianSentiment = 0.2
+sentiments = []
+correct = 0
+total = 0
 for interaction in allInteractions:
     # Combine multiline content for the 'review' field
-    review = interaction['review']
+    review = interaction['review_text']
     
     # Perform sentiment analysis
     sentiment_polarity, sentiment_label = analyze_sentiment(review)
     
-    # Add sentiment-related information to the interaction dictionary
+    #Add sentiment-related information to the interaction dictionary
     interaction['sentiment_polarity'] = sentiment_polarity
     interaction['sentiment_label'] = sentiment_label
+    #sentiments.append(sentiment_polarity)
+    if sentiment_polarity >= medianSentiment and interaction['is_5'] == 1:
+        correct += 1
+    elif sentiment_polarity < medianSentiment and interaction['is_5'] == 0:
+        correct += 1
 
-# Print the sentiment-related information for the first few interactions
-for interaction in allInteractions[:5]:
-    print(f"Review: {interaction['review']}")
-    print(f"Sentiment Polarity: {interaction['sentiment_polarity']}")
-    print(f"Sentiment Label: {interaction['sentiment_label']}")
-    print("------")
+
+print("Correct: " + str(correct))
+print("Total: " + str(len(allInteractions)))
+print("Accuracy on Validation Set: " + str(correct / len(allInteractions)))
+
+# print("Correct: " + str(correct))
+# print("Total: " + str(total))
+# print("Accuracy on Validation Set: " + str(correct / total))
+
+# sentiments.sort(reverse=True)
+# medianSentiment = sentiments[math.floor(len(sentiments) * (1 - 0.7209))]
+
+#print(medianSentiment)

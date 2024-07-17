@@ -3,9 +3,10 @@
 ## Setup
 
 import pandas as pd
+import random
 
-int_train_df = pd.read_csv("dataset/interactions_train.csv")
-int_test_df = pd.read_csv("dataset/interactions_test.csv")
+int_train_df = pd.read_csv("interactions_train.csv")
+int_test_df = pd.read_csv("interactions_test.csv")
 
 ## Model
 
